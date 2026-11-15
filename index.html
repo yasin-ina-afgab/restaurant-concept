@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Damal Restaurants — Website Concept</title>
+<meta name="description" content="Website redesign concept for Damal Restaurants: one brand, every branch — London, Hargeisa and what comes next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0d3b2e; --green-2:#14523f; --green-soft:#e4ede8;
+  --gold:#d9a441; --gold-2:#b8862b; --terracotta:#b5522f;
+  --cream:#faf6ee; --paper:#ffffff; --ink:#1c2420; --muted:#5d6a63; --line:#e6dfd1;
+  --radius:18px; --shadow:0 10px 30px rgba(13,59,46,.10);
+  --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--serif);line-height:1.1;margin:0 0 .4em;font-weight:600}
+h2{font-size:clamp(2rem,4.5vw,3.1rem)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-2);font-weight:600;margin-bottom:.8rem;display:block}
+.so{font-family:var(--serif);font-style:italic;color:var(--muted);font-weight:400}
+section{padding:96px 0}
+.btn{display:inline-flex;align-items:center;gap:.5em;padding:.9em 1.5em;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid transparent;cursor:pointer;font:inherit;font-weight:600;transition:transform .15s,background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-gold{background:var(--gold);color:var(--green)}
+.btn-gold:hover{background:#e6b457}
+.btn-ghost{border-color:rgba(255,255,255,.5);color:#fff}
+.btn-dark{background:var(--green);color:#fff}
+
+/* concept ribbon */
+.ribbon{background:var(--ink);color:#e9e4d8;font-size:.82rem;text-align:center;padding:8px 16px}
+.ribbon b{color:var(--gold)}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(250,246,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-mark{width:40px;height:40px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:var(--gold);font-family:var(--serif);font-weight:700;font-size:1.3rem}
+.logo-text{font-family:var(--serif);font-size:1.45rem;font-weight:700;color:var(--green);letter-spacing:.02em}
+.logo-text small{display:block;white-space:nowrap;font-family:var(--sans);font-size:.62rem;letter-spacing:.24em;color:var(--muted);font-weight:500;margin-top:-4px}
+.nav-links{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+.nav-links a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--ink)}
+.nav-links a:hover{color:var(--green-2)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.branch-pill{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 6px 6px 12px;font-size:.85rem}
+.branch-pill select{border:0;background:var(--green-soft);border-radius:999px;padding:5px 10px;font:inherit;font-weight:600;color:var(--green);cursor:pointer}
+.menu-toggle{display:none;background:none;border:0;font-size:1.6rem;cursor:pointer;color:var(--green)}
+
+/* hero */
+.hero{position:relative;background:var(--green);color:#fff;padding:0;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23d9a441' stroke-opacity='.13' stroke-width='1.5'%3E%3Cpath d='M40 4 76 40 40 76 4 40z'/%3E%3Cpath d='M40 20 60 40 40 60 20 40z'/%3E%3C/g%3E%3C/svg%3E");opacity:.9}
+.hero-inner{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;padding:96px 20px 110px;max-width:1180px;margin:0 auto}
+.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:600}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero p.lead{font-size:1.15rem;color:#d7e3dc;max-width:34em;margin:0 0 2rem}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-card{background:var(--paper);color:var(--ink);border-radius:var(--radius);padding:28px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.hero-card h3{font-size:1.25rem;margin-bottom:4px}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--green-soft);color:var(--green)}
+.status.closed{background:#f6e3dc;color:var(--terracotta)}
+.status i{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.hero-card dl{margin:18px 0 20px;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:.93rem}
+.hero-card dt{color:var(--muted)}
+.hero-card dd{margin:0;font-weight:500}
+.hero-card .row{display:flex;gap:10px;flex-wrap:wrap}
+.hero-card .row .btn{padding:.7em 1.1em;font-size:.9rem}
+.tabs-branch{display:flex;gap:6px;margin-bottom:18px;background:var(--cream);padding:4px;border-radius:999px}
+.tabs-branch button{flex:1;border:0;background:none;padding:8px 10px;border-radius:999px;font:inherit;font-weight:600;font-size:.88rem;color:var(--muted);cursor:pointer}
+.tabs-branch button[aria-selected="true"]{background:var(--green);color:#fff}
+
+/* strip */
+.strip{background:var(--gold);color:var(--green);padding:18px 0;overflow:hidden;white-space:nowrap}
+.strip-track{display:inline-flex;gap:48px;animation:scroll 40s linear infinite;font-family:var(--serif);font-size:1.25rem;font-weight:600}
+.strip-track span::after{content:"✦";margin-left:48px;font-size:.8em}
+@keyframes scroll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.strip-track{animation:none}}
+
+/* story */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.story-visual{position:relative;aspect-ratio:4/5;border-radius:var(--radius);overflow:hidden}
+.ph{position:relative;background:linear-gradient(135deg,var(--c1,#14523f),var(--c2,#0d3b2e));display:flex;align-items:flex-end;padding:18px;color:#fff;overflow:hidden}
+.ph::before{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cpath d='M24 2 46 24 24 46 2 24z' fill='none' stroke='%23fff' stroke-opacity='.10'/%3E%3C/svg%3E")}
+.ph .ph-label{position:relative;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;background:rgba(0,0,0,.28);padding:4px 10px;border-radius:999px}
+.ph .ph-big{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,3vw,2.4rem);opacity:.9;text-align:center;padding:20px}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.stat{border-top:2px solid var(--gold);padding-top:12px}
+.stat b{display:block;font-family:var(--serif);font-size:2rem;color:var(--green)}
+.stat span{font-size:.85rem;color:var(--muted)}
+
+/* locations */
+.locations{background:var(--paper)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:40px;flex-wrap:wrap}
+.head p{max-width:30em;color:var(--muted);margin:0}
+.loc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.loc{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--cream);display:flex;flex-direction:column}
+.loc .ph{aspect-ratio:16/10}
+.loc-body{padding:22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.loc-body h3{font-size:1.5rem;margin:0}
+.loc-meta{font-size:.92rem;color:var(--muted);display:grid;gap:4px}
+.loc-meta b{color:var(--ink);font-weight:500}
+.loc-actions{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;padding-top:8px}
+.loc-actions a{font-size:.88rem;font-weight:600;color:var(--green);text-decoration:none;border-bottom:2px solid var(--gold)}
+.loc.soon{background:var(--green);color:#fff;border-color:var(--green)}
+.loc.soon .loc-meta{color:#cfdcd5}
+.loc.soon .loc-meta b{color:#fff}
+.loc.soon input{flex:1;min-width:0;border:0;border-radius:999px;padding:.7em 1em;font:inherit}
+.loc.soon form{display:flex;gap:8px;margin-top:auto}
+.loc.soon .btn{padding:.7em 1.1em}
+.tag{display:inline-block;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--gold-2)}
+.loc.soon .tag{color:var(--gold)}
+
+/* menu */
+.menu-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+.menu-tabs button{border:1px solid var(--line);background:#fff;padding:.6em 1.2em;border-radius:999px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;color:var(--ink)}
+.menu-tabs button[aria-selected="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.menu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 56px}
+.dish{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:18px 0;border-bottom:1px dashed var(--line)}
+.dish h3{font-size:1.2rem;margin:0}
+.dish h3 .so{font-size:.95rem;margin-left:6px}
+.dish .price{font-family:var(--serif);font-weight:600;color:var(--green);font-size:1.15rem}
+.dish p{grid-column:1/-1;margin:0;color:var(--muted);font-size:.93rem}
+.badge{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;background:var(--gold);color:var(--green);padding:2px 8px;border-radius:999px;font-weight:700;vertical-align:middle;margin-left:6px;font-family:var(--sans)}
+.menu-note{margin-top:24px;font-size:.88rem;color:var(--muted)}
+
+/* signature */
+.signature{background:var(--green);color:#fff}
+.signature .eyebrow{color:var(--gold)}
+.sig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.sig{border-radius:var(--radius);overflow:hidden;background:var(--green-2)}
+.sig .ph{aspect-ratio:1}
+.sig div.t{padding:16px 18px 20px}
+.sig h3{font-size:1.2rem;margin:0}
+.sig p{margin:4px 0 0;font-size:.88rem;color:#cfdcd5}
+
+/* events */
+.events-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.ev-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}
+.ev{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.ev b{display:block;font-family:var(--serif);font-size:1.1rem;color:var(--green)}
+.ev span{font-size:.86rem;color:var(--muted)}
+
+/* reviews */
+.reviews{background:var(--paper)}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.rev{background:var(--cream);border-radius:var(--radius);padding:28px;position:relative}
+.rev .stars{color:var(--gold-2);letter-spacing:2px}
+.rev blockquote{margin:12px 0 16px;font-family:var(--serif);font-size:1.15rem;line-height:1.45}
+.rev cite{font-style:normal;font-size:.88rem;color:var(--muted)}
+.rating-sum{display:flex;align-items:center;gap:14px}
+.rating-sum b{font-family:var(--serif);font-size:2.6rem;color:var(--green)}
+
+/* reserve */
+.reserve{background:linear-gradient(180deg,var(--cream),#f2ead9)}
+.res-card{background:#fff;border-radius:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:.9fr 1.1fr;overflow:hidden}
+.res-side{background:var(--green);color:#fff;padding:44px}
+.res-side .eyebrow{color:var(--gold)}
+.res-side ul{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:14px;color:#d7e3dc}
+.res-side li::before{content:"✦ ";color:var(--gold)}
+form.res{padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form.res label{display:grid;gap:6px;font-size:.85rem;font-weight:600;color:var(--muted)}
+form.res .full{grid-column:1/-1}
+form.res input,form.res select,form.res textarea{font:inherit;font-size:1rem;border:1px solid var(--line);border-radius:12px;padding:.75em .9em;background:var(--cream);color:var(--ink);width:100%}
+form.res input:focus,form.res select:focus,form.res textarea:focus{outline:2px solid var(--gold);border-color:transparent}
+.res-done{grid-column:1/-1;background:var(--green-soft);color:var(--green);border-radius:12px;padding:14px 16px;font-weight:500;display:none}
+
+/* footer */
+footer{background:var(--ink);color:#c9cfcb;padding:72px 0 28px;font-size:.92rem}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
+footer h4{color:#fff;font-family:var(--serif);font-size:1.1rem;margin:0 0 14px;font-weight:600}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--gold)}
+.hours td{padding:2px 0}
+.hours td:first-child{padding-right:16px;color:#8e9a93}
+.foot-bottom{border-top:1px solid #2f3a35;margin-top:48px;padding-top:20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.82rem;color:#8e9a93}
+.social{display:flex;gap:10px;margin-top:16px}
+.social a{width:38px;height:38px;border-radius:50%;border:1px solid #3a4640;display:grid;place-items:center;font-size:.8rem;font-weight:600}
+
+/* whatsapp float */
+.wa{position:fixed;right:18px;bottom:18px;z-index:60;background:#25d366;color:#fff;border-radius:999px;padding:12px 18px;font-weight:600;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.2);font-size:.92rem}
+
+/* responsive */
+@media (max-width:980px){
+  .hero-inner,.story-grid,.events-grid,.res-card{grid-template-columns:1fr}
+  .loc-grid{grid-template-columns:1fr 1fr}
+  .sig-grid{grid-template-columns:1fr 1fr}
+  .rev-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .nav-links{display:none}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--cream);padding:20px;border-bottom:1px solid var(--line);gap:16px}
+  .menu-toggle{display:block}
+  .story-visual{aspect-ratio:16/10}
+}
+@media (max-width:640px){
+  section{padding:64px 0}
+  .wrap,.hero-inner{padding-left:16px;padding-right:16px}
+  .hero-inner{padding-top:56px;padding-bottom:64px;gap:36px}
+  .loc-grid,.sig-grid,.menu-grid,.foot-grid,.ev-list{grid-template-columns:1fr}
+  form.res{grid-template-columns:1fr;padding:28px 20px}
+  .res-side{padding:32px 20px}
+  .branch-pill span{display:none}
+  .story-stats{grid-template-columns:1fr 1fr 1fr}
+  .wa span{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="ribbon"><b>Design concept</b> prepared for Damal Restaurants — a proposal, not the live website. Content and photos to be confirmed with the owner.</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Damal home">
+      <span class="logo-mark">D</span>
+      <span class="logo-text">DAMAL<small>SOMALI RESTAURANTS</small></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#locations">Locations</a></li>
+      <li><a href="#events">Events &amp; Catering</a></li>
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+    </ul>
+    <div class="nav-right">
+      <label class="branch-pill"><span>Your Damal:</span>
+        <select id="branchSelect" aria-label="Choose your branch">
+          <option value="london">London</option>
+          <option value="hargeisa">Hargeisa</option>
+        </select>
+      </label>
+      <button class="menu-toggle" aria-label="Open menu" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow" style="color:var(--gold)">Ku soo dhawoow · Welcome</span>
+      <h1>The taste of home,<br>from <em>Hargeisa</em> to <em>London</em>.</h1>
+      <p class="lead">Generous Somali cooking — bariis, hilib ari, suqaar and fresh laxoox — served with the warmth of a family table. One Damal, wherever you are.</p>
+      <div class="ctas">
+        <a class="btn btn-gold" href="#reserve">Book a table →</a>
+        <a class="btn btn-ghost" href="#menu">See the menu</a>
+      </div>
+    </div>
+    <aside class="hero-card" aria-live="polite">
+      <div class="tabs-branch" role="tablist" aria-label="Branch">
+        <button role="tab" data-branch="london" aria-selected="true">London</button>
+        <button role="tab" data-branch="hargeisa" aria-selected="false">Hargeisa</button>
+      </div>
+      <span class="status" id="openStatus"><i></i><span>Open now</span></span>
+      <h3 id="cardName" style="margin-top:12px">Damal Stepney Green</h3>
+      <dl>
+        <dt>Address</dt><dd id="cardAddr"></dd>
+        <dt>Hours</dt><dd id="cardHours"></dd>
+        <dt>Phone</dt><dd id="cardPhone"></dd>
+        <dt>Local time</dt><dd id="cardTime"></dd>
+      </dl>
+      <div class="row">
+        <a class="btn btn-dark" id="cardDirections" target="_blank" rel="noopener">Directions</a>
+        <a class="btn btn-gold" id="cardCall">Call</a>
+        <a class="btn" style="border-color:var(--line)" id="cardOrder" href="#reserve">Reserve</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="strip" aria-hidden="true"><div class="strip-track">
+  <span>Bariis Iskukaris</span><span>Hilib Ari</span><span>Suqaar</span><span>Laxoox</span><span>Sambuusa</span><span>Muqmad</span><span>Malawax</span><span>Shaah</span><span>Milk Cake</span>
+  <span>Bariis Iskukaris</span><span>Hilib Ari</span><span>Suqaar</span><span>Laxoox</span><span>Sambuusa</span><span>Muqmad</span><span>Malawax</span><span>Shaah</span><span>Milk Cake</span>
+</div></div>
+
+<!-- STORY -->
+<section id="story">
+  <div class="wrap story-grid">
+    <div class="story-visual ph" style="--c1:#b5522f;--c2:#7a3018">
+      <span class="ph-big">The family table</span>
+      <span class="ph-label">Photo · dining room / family platter</span>
+    </div>
+    <div>
+      <span class="eyebrow">Our story</span>
+      <h2>Good things come to those who cook for others.</h2>
+      <p>Damal began in Hargeisa with a simple idea: cook the food our families grew up on, generously and with care. Today the same recipes travel with our community — to the busy streets of East London, and soon, to new cities.</p>
+      <p class="so">“Damal” is the great shade tree where people gather. That's what we want every branch to be.</p>
+      <div class="story-stats">
+        <div class="stat"><b>2</b><span>countries</span></div>
+        <div class="stat"><b>4.2★</b><span>Google, 1,000+ reviews (London)</span></div>
+        <div class="stat"><b>7</b><span>days a week</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section class="locations" id="locations">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Locations</span><h2>Find your Damal.</h2></div>
+      <p>Every branch shares one kitchen philosophy. Each has its own hours, menu prices and booking line — all managed from one website.</p>
+    </div>
+    <div class="loc-grid">
+      <article class="loc">
+        <div class="ph" style="--c1:#14523f;--c2:#0d3b2e"><span class="ph-big">London</span><span class="ph-label">Photo · Mile End Rd frontage</span></div>
+        <div class="loc-body">
+          <span class="tag">United Kingdom</span>
+          <h3>Stepney Green, London</h3>
+          <div class="loc-meta">
+            <span><b>110 Mile End Road, London E1 4UN</b></span>
+            <span>Every day · 9:00 – 23:00</span>
+            <span>020 7790 0284</span>
+          </div>
+          <div class="loc-actions">
+            <a href="#reserve" data-pick="london">Book here</a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=110%20Mile%20End%20Rd%2C%20London%20E1%204UN" target="_blank" rel="noopener">Directions</a>
+            <a href="#events">Damal Banqueting</a>
+          </div>
+        </div>
+      </article>
+      <article class="loc">
+        <div class="ph" style="--c1:#c58a2a;--c2:#8a5a12"><span class="ph-big">Hargeisa</span><span class="ph-label">Photo · restaurant &amp; grand hall</span></div>
+        <div class="loc-body">
+          <span class="tag">Somaliland · Flagship</span>
+          <h3>Hargeisa</h3>
+          <div class="loc-meta">
+            <span><b>Waheen Highway, Hargeisa</b></span>
+            <span>Every day · 7:00 – 23:00</span>
+            <span>+252 65 983 6121</span>
+          </div>
+          <div class="loc-actions">
+            <a href="#reserve" data-pick="hargeisa">Book here</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=H377%2BCC5%20Hargeisa" target="_blank" rel="noopener">Directions</a>
+            <a href="#events">Grand hall</a>
+          </div>
+        </div>
+      </article>
+      <article class="loc soon">
+        <div class="ph" style="--c1:#1e6b53;--c2:#0b2f24"><span class="ph-big">Your city?</span><span class="ph-label">Coming soon</span></div>
+        <div class="loc-body">
+          <span class="tag">Opening next</span>
+          <h3>New Damal locations</h3>
+          <div class="loc-meta">
+            <span>We're growing. Adding a branch to this site takes minutes: address, hours, menu prices, done.</span>
+            <span><b>Want Damal near you? Tell us where.</b></span>
+          </div>
+          <form onsubmit="event.preventDefault();this.innerHTML='<span style=\'color:var(--gold);font-weight:600\'>Thank you — noted! (demo)</span>'">
+            <input placeholder="Your city" aria-label="Your city" required>
+            <button class="btn btn-gold">Vote</button>
+          </form>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNATURE -->
+<section class="signature">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Signature dishes</span><h2>Made for sharing.</h2></div>
+      <p style="color:#cfdcd5">The dishes guests come back for, cooked the same way in every Damal kitchen.</p>
+    </div>
+    <div class="sig-grid">
+      <div class="sig"><div class="ph" style="--c1:#c58a2a;--c2:#7a4f10"><span class="ph-big">Bariis &amp; Hilib Ari</span><span class="ph-label">Photo</span></div><div class="t"><h3>Bariis iyo Hilib Ari</h3><p>Spiced rice with slow-cooked tender goat, banana on the side.</p></div></div>
+      <div class="sig"><div class="ph" style="--c1:#b5522f;--c2:#6e2a14"><span class="ph-big">Damal Platter</span><span class="ph-label">Photo</span></div><div class="t"><h3>The Damal Platter</h3><p>Rice, hanid, suqaar and chicken with green &amp; red bisbaas.</p></div></div>
+      <div class="sig"><div class="ph" style="--c1:#d9a441;--c2:#9b6d1a"><span class="ph-big">Laxoox</span><span class="ph-label">Photo</span></div><div class="t"><h3>Laxoox &amp; Suqaar</h3><p>Soft Somali flatbread with sautéed diced beef — the classic breakfast.</p></div></div>
+      <div class="sig"><div class="ph" style="--c1:#7a5a3c;--c2:#3e2b1b"><span class="ph-big">Milk Cake</span><span class="ph-label">Photo</span></div><div class="t"><h3>Milk Cake &amp; Shaah</h3><p>A guest favourite, with spiced Somali tea.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Menu</span><h2>What's cooking.</h2></div>
+      <p id="menuBranchNote">Showing the <b>London</b> menu. Prices and availability follow the branch you choose.</p>
+    </div>
+    <div class="menu-tabs" role="tablist" id="menuTabs"></div>
+    <div class="menu-grid" id="menuGrid"></div>
+    <p class="menu-note" id="menuNote"></p>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events" style="background:var(--paper)">
+  <div class="wrap events-grid">
+    <div>
+      <span class="eyebrow">Events, banqueting &amp; catering</span>
+      <h2>Made for the gatherings that matter.</h2>
+      <p>From nikah celebrations to Eid gatherings and corporate dinners — Damal Banqueting in London and the grand hall in Hargeisa host it all, or we bring the feast to you.</p>
+      <div class="ev-list">
+        <div class="ev"><b>Weddings &amp; Nikah</b><span>Full banquet menus</span></div>
+        <div class="ev"><b>Eid &amp; Ramadan</b><span>Iftar buffets &amp; group bookings</span></div>
+        <div class="ev"><b>Corporate</b><span>Lunches, launches, dinners</span></div>
+        <div class="ev"><b>Outside catering</b><span>Platters delivered to your venue</span></div>
+      </div>
+      <a class="btn btn-dark" href="#reserve" onclick="document.getElementById('resType').value='event'">Enquire about an event →</a>
+    </div>
+    <div class="ph" style="--c1:#0d3b2e;--c2:#14523f;aspect-ratio:4/5;border-radius:var(--radius)"><span class="ph-big">Damal Banqueting</span><span class="ph-label">Photo · hall set for a wedding</span></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="head">
+      <div><span class="eyebrow">Reviews</span><h2>What our guests say.</h2></div>
+      <div class="rating-sum"><b>4.2</b><div><div style="color:var(--gold-2)">★★★★☆</div><span style="font-size:.88rem;color:var(--muted)">1,000+ Google reviews · Stepney Green</span></div></div>
+    </div>
+    <div class="rev-grid">
+      <figure class="rev"><div class="stars">★★★★★</div><blockquote>“5 stars for freshness, taste and portion size.”</blockquote><cite>Imteaz · Google</cite></figure>
+      <figure class="rev"><div class="stars">★★★★★</div><blockquote>“Best Somali food I've had in a long time.”</blockquote><cite>Ralph · Google</cite></figure>
+      <figure class="rev"><div class="stars">★★★★★</div><blockquote>“Food always on point, and the milk cake after is a treat.”</blockquote><cite>A. W. · Google</cite></figure>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVE -->
+<section class="reserve" id="reserve">
+  <div class="wrap">
+    <div class="res-card">
+      <div class="res-side">
+        <span class="eyebrow">Reservations</span>
+        <h2 style="font-size:2.2rem">Your table is waiting.</h2>
+        <p style="color:#d7e3dc">Choose a branch, pick a time — the branch confirms by phone or WhatsApp.</p>
+        <ul>
+          <li>Requests go straight to the right branch</li>
+          <li>No payment needed to book</li>
+          <li>Large group or event? Choose “Event enquiry”</li>
+        </ul>
+      </div>
+      <form class="res" id="resForm">
+        <label>Branch
+          <select id="resBranch" required>
+            <option value="london">London — Stepney Green</option>
+            <option value="hargeisa">Hargeisa</option>
+          </select>
+        </label>
+        <label>Type
+          <select id="resType">
+            <option value="table">Table booking</option>
+            <option value="event">Event enquiry</option>
+            <option value="catering">Catering</option>
+          </select>
+        </label>
+        <label>Date<input type="date" id="resDate" required></label>
+        <label>Time<input type="time" id="resTime" required></label>
+        <label>Guests<input type="number" min="1" max="300" value="2" required></label>
+        <label>Name<input type="text" autocomplete="name" required></label>
+        <label class="full">Phone<input type="tel" id="resPhone" placeholder="+44 …" autocomplete="tel" required></label>
+        <label class="full">Special request <textarea rows="3" placeholder="High chair, birthday, dietary needs…"></textarea></label>
+        <button class="btn btn-gold full" type="submit" style="justify-content:center">Request booking →</button>
+        <div class="res-done" id="resDone" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top"><span class="logo-mark">D</span><span class="logo-text" style="color:#fff">DAMAL<small style="color:#8e9a93">SOMALI RESTAURANTS</small></span></a>
+        <p style="margin-top:16px;max-width:22em">Authentic Somali cooking and warm hospitality — in Hargeisa, London and soon beyond.</p>
+        <div class="social"><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="TikTok">TT</a><a href="#" aria-label="Facebook">FB</a></div>
+      </div>
+      <div>
+        <h4>London</h4>
+        <ul><li>110 Mile End Road, E1 4UN</li><li><a href="tel:+442077900284">020 7790 0284</a></li></ul>
+        <table class="hours" style="margin-top:10px"><tr><td>Mon – Sun</td><td>9:00 – 23:00</td></tr></table>
+      </div>
+      <div>
+        <h4>Hargeisa</h4>
+        <ul><li>Waheen Highway, Hargeisa</li><li><a href="tel:+252659836121">+252 65 983 6121</a></li></ul>
+        <table class="hours" style="margin-top:10px"><tr><td>Mon – Sun</td><td>7:00 – 23:00</td></tr></table>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul><li><a href="#menu">Menu</a></li><li><a href="#events">Events &amp; catering</a></li><li><a href="#locations">New locations</a></li><li><a href="#reserve">Reservations</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Damal Restaurants · Concept design</span><span>Privacy · Cookies · Terms</span></div>
+  </div>
+</footer>
+
+<a class="wa" id="waBtn" href="#" target="_blank" rel="noopener">💬 <span>WhatsApp us</span></a>
+
+<script>
+const BRANCHES={
+  london:{name:"Damal Stepney Green",addr:"110 Mile End Road, London E1 4UN",hoursTxt:"Every day · 9:00 – 23:00",open:9,close:23,
+    phone:"020 7790 0284",tel:"+442077900284",wa:null,tz:"Europe/London",cur:"£",
+    maps:"https://www.google.com/maps/dir/?api=1&destination=110%20Mile%20End%20Rd%2C%20London%20E1%204UN",phonePh:"+44 …"},
+  hargeisa:{name:"Damal Hargeisa",addr:"Waheen Highway, Hargeisa",hoursTxt:"Every day · 7:00 – 23:00",open:7,close:23,
+    phone:"+252 65 983 6121",tel:"+252659836121",wa:"252659836121",tz:"Africa/Mogadishu",cur:"$",
+    maps:"https://www.google.com/maps/search/?api=1&query=H377%2BCC5%20Hargeisa",phonePh:"+252 …"}
+};
+// Hargeisa prices are taken from the current official site; London prices are placeholders (null) to be filled by the branch.
+const MENU={
+  "Breakfast":[
+    {n:"Laxoox & Suqaar",so:"Laxoox iyo Suqaar",d:"Somali flatbread with diced beef sautéed with traditional spices.",p:{hargeisa:6}},
+    {n:"Muqmad",so:"",d:"Stir-fried preserved beef with laxoox or bread.",p:{hargeisa:6},b:"Classic"},
+    {n:"Foul / Baked Beans",so:"Digir",d:"Choice of foul or baked beans with bread.",p:{hargeisa:5}},
+    {n:"Shakshuka",so:"",d:"Eggs cooked with tomato and chilli.",p:{hargeisa:4}},
+    {n:"Egg Roll",so:"",d:"Omelette wrapped in a pancake with seared tomatoes, lettuce & peppers.",p:{hargeisa:5}},
+    {n:"English Breakfast",so:"",d:"Beef, baked beans, grilled tomato and fried eggs.",p:{hargeisa:8}}
+  ],
+  "Somali Mains":[
+    {n:"Rice & Goat",so:"Bariis iyo Hilib Ari",d:"Spiced rice with slow-cooked tender goat, served with banana.",p:{},b:"Signature"},
+    {n:"The Damal Platter",so:"",d:"Rice, hanid, suqaar and chicken to share, with green & red bisbaas.",p:{},b:"For sharing"},
+    {n:"Beef Stir Fry",so:"Suqaar",d:"Diced beef marinated in traditional spices, sautéed with vegetables.",p:{hargeisa:6}},
+    {n:"Chicken Biryani",so:"",d:"Grilled chicken, basmati rice, spices, coriander and lemon.",p:{hargeisa:10}},
+    {n:"Coconut Fish Curry",so:"",d:"Cubed fish simmered in a creamy coconut curry.",p:{hargeisa:9.5}},
+    {n:"Chicken Curry",so:"",d:"BBQ chicken in a spiced tomato sauce, with rice or naan.",p:{hargeisa:10}}
+  ],
+  "Grill & Wraps":[
+    {n:"Beef Steak",so:"",d:"Pan-seared steak served with a creamy white sauce.",p:{hargeisa:12}},
+    {n:"Grilled Chicken",so:"",d:"Tender grilled chicken, seasoned to perfection.",p:{hargeisa:10}},
+    {n:"Beef Shawarma",so:"",d:"Grilled beef in garlic sauce, wrapped in saj bread.",p:{hargeisa:8}},
+    {n:"Chicken Shawarma",so:"",d:"Grilled chicken in garlic sauce, wrapped in saj bread.",p:{hargeisa:8}},
+    {n:"Chicken Fillet Burger",so:"",d:"Cheddar, lettuce, onion rings, pineapple, chipotle mayo, fries.",p:{hargeisa:9}},
+    {n:"Quesadilla",so:"",d:"Crispy saj bread with chicken and melted cheese, with fries.",p:{hargeisa:8}}
+  ],
+  "Sweets & Drinks":[
+    {n:"Milk Cake",so:"",d:"Soft, milky and a guest favourite.",p:{},b:"Favourite"},
+    {n:"Pancakes",so:"",d:"With banana and a choice of honey or Nutella.",p:{hargeisa:4}},
+    {n:"French Toast",so:"",d:"Oven-baked, with a sprinkle of nuts.",p:{hargeisa:5}},
+    {n:"Somali Tea",so:"Shaah",d:"Spiced black tea with cardamom and cinnamon.",p:{}},
+    {n:"Fresh Juices",so:"Cabitaan",d:"Mango, avocado, mixed fruit — made to order.",p:{}},
+    {n:"Iced Latte",so:"",d:"Espresso over cold milk.",p:{}}
+  ]
+};
+let branch="london", cat=Object.keys(MENU)[0];
+try{const s=localStorage.getItem("damalBranch");if(s&&BRANCHES[s])branch=s;}catch(e){}
+
+function fmtPrice(v,b){if(v==null)return"—";return BRANCHES[b].cur+(Number.isInteger(v)?v:v.toFixed(2));}
+function renderMenu(){
+  const tabs=document.getElementById("menuTabs");
+  tabs.innerHTML=Object.keys(MENU).map(c=>`<button role="tab" aria-selected="${c===cat}" data-cat="${c}">${c}</button>`).join("");
+  tabs.querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;renderMenu();});
+  document.getElementById("menuGrid").innerHTML=MENU[cat].map(d=>`
+    <div class="dish"><h3>${d.n}${d.so?`<span class="so">${d.so}</span>`:""}${d.b?`<span class="badge">${d.b}</span>`:""}</h3>
+    <span class="price">${fmtPrice(d.p[branch],branch)}</span><p>${d.d}</p></div>`).join("");
+  const name=branch==="london"?"London":"Hargeisa";
+  document.getElementById("menuBranchNote").innerHTML=`Showing the <b>${name}</b> menu. Prices and availability follow the branch you choose.`;
+  document.getElementById("menuNote").textContent=branch==="london"
+    ?"Concept note: London prices (£) to be supplied by the branch — shown as “—” until then."
+    :"Concept note: Hargeisa prices taken from the current website; “—” = price to be confirmed.";
+}
+function renderBranch(){
+  const b=BRANCHES[branch];
+  document.getElementById("branchSelect").value=branch;
+  document.getElementById("resBranch").value=branch;
+  document.querySelectorAll(".tabs-branch button").forEach(x=>x.setAttribute("aria-selected",x.dataset.branch===branch));
+  document.getElementById("cardName").textContent=b.name;
+  document.getElementById("cardAddr").textContent=b.addr;
+  document.getElementById("cardHours").textContent=b.hoursTxt;
+  document.getElementById("cardPhone").textContent=b.phone;
+  document.getElementById("cardDirections").href=b.maps;
+  document.getElementById("cardCall").href="tel:"+b.tel;
+  document.getElementById("resPhone").placeholder=b.phonePh;
+  const wa=document.getElementById("waBtn");
+  if(b.wa){wa.style.display="";wa.href="https://wa.me/"+b.wa;}else{wa.style.display="none";}
+  tick();renderMenu();
+  try{localStorage.setItem("damalBranch",branch);}catch(e){}
+}
+function tick(){
+  const b=BRANCHES[branch];
+  const now=new Date();
+  const time=new Intl.DateTimeFormat("en-GB",{timeZone:b.tz,hour:"2-digit",minute:"2-digit",hour12:false}).format(now);
+  const h=parseInt(time.slice(0,2),10);
+  const open=h>=b.open&&h<b.close;
+  document.getElementById("cardTime").textContent=time;
+  const st=document.getElementById("openStatus");
+  st.classList.toggle("closed",!open);
+  st.querySelector("span").textContent=open?`Open now · until ${b.close}:00`:`Closed · opens ${b.open}:00`;
+}
+function setBranch(v){branch=v;renderBranch();}
+document.getElementById("branchSelect").onchange=e=>setBranch(e.target.value);
+document.getElementById("resBranch").onchange=e=>setBranch(e.target.value);
+document.querySelectorAll(".tabs-branch button").forEach(x=>x.onclick=()=>setBranch(x.dataset.branch));
+document.querySelectorAll("[data-pick]").forEach(a=>a.addEventListener("click",()=>setBranch(a.dataset.pick)));
+document.getElementById("resDate").min=new Date().toISOString().slice(0,10);
+document.getElementById("resForm").onsubmit=e=>{
+  e.preventDefault();
+  const done=document.getElementById("resDone");
+  done.style.display="block";
+  done.textContent=`Thank you! Your request has been sent to ${BRANCHES[branch].name}. They'll confirm by phone shortly. (Demo — nothing was sent.)`;
+};
+document.querySelectorAll(".nav-links a").forEach(a=>a.onclick=()=>document.getElementById("navLinks").classList.remove("open"));
+renderBranch();
+setInterval(tick,30000);
+</script>
+</body>
+</html>
