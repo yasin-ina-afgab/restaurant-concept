@@ -3,27 +3,37 @@ import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig, Easi
 import {COLORS, fontFamily, fallbackFontFamily} from './theme';
 import type {Scene} from './scenes';
 
-const FADE_OUT = 12;
+const ENTER_FRAMES = 15; // الدخول في أول 15 إطاراً من المشهد
+const EXIT_FRAMES = 10; // الخروج في آخر 10 إطارات
 
-// ظهور ناعم: تلاشي + تكبير سلس، مع اختفاء هادئ في نهاية المشهد
-const useAppear = (delay: number, durationInFrames: number) => {
+// دخول بـ spring من الأسفل للأعلى مع تلاشٍ، وخروج ناعم في نهاية المشهد
+const useEnterExit = (delay: number, durationInFrames: number) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const f = frame - delay;
-  const progress = spring({frame: f, fps, config: {damping: 200, mass: 0.9}, durationInFrames: 24});
-  const fadeIn = interpolate(f, [0, 18], [0, 1], {
+
+  const enter = spring({
+    frame: frame - delay,
+    fps,
+    durationInFrames: ENTER_FRAMES - delay,
+    config: {damping: 14, stiffness: 120, mass: 0.8},
+  });
+  const enterOpacity = interpolate(frame, [delay, ENTER_FRAMES], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
     easing: Easing.out(Easing.cubic),
   });
-  const fadeOut = interpolate(frame, [durationInFrames - FADE_OUT, durationInFrames], [1, 0], {
+
+  const exitStart = durationInFrames - EXIT_FRAMES;
+  const exit = interpolate(frame, [exitStart, durationInFrames - 1], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
+    easing: Easing.inOut(Easing.cubic),
   });
+
   return {
-    opacity: fadeIn * fadeOut,
-    scale: interpolate(progress, [0, 1], [0.9, 1]),
-    translateY: interpolate(progress, [0, 1], [18, 0]),
+    opacity: enterOpacity * (1 - exit),
+    translateY: interpolate(enter, [0, 1], [90, 0]) - exit * 40,
+    scale: interpolate(enter, [0, 1], [0.94, 1]) - exit * 0.04,
   };
 };
 
@@ -44,8 +54,11 @@ export const SceneText: React.FC<{scene: Scene; durationInFrames: number}> = ({
   scene,
   durationInFrames,
 }) => {
-  const top = useAppear(0, durationInFrames);
-  const card = useAppear(8, durationInFrames);
+  const frame = useCurrentFrame();
+  const top = useEnterExit(0, durationInFrames);
+  const card = useEnterExit(4, durationInFrames);
+  // نبض خفيف جداً للبطاقة أثناء ظهورها
+  const cardFloat = Math.sin(frame / 22) * 4;
 
   return (
     <AbsoluteFill>
@@ -87,7 +100,7 @@ export const SceneText: React.FC<{scene: Scene; durationInFrames: number}> = ({
           display: 'flex',
           justifyContent: 'center',
           opacity: card.opacity,
-          transform: `translateY(${card.translateY}px) scale(${card.scale})`,
+          transform: `translateY(${card.translateY + cardFloat}px) scale(${card.scale})`,
         }}
       >
         <div
@@ -105,15 +118,7 @@ export const SceneText: React.FC<{scene: Scene; durationInFrames: number}> = ({
             justifyContent: 'center',
           }}
         >
-          <div
-            dir="rtl"
-            lang="ar"
-            style={{
-              ...arabicText,
-              fontSize: 64,
-              fontWeight: 700,
-            }}
-          >
+          <div dir="rtl" lang="ar" style={{...arabicText, fontSize: 64, fontWeight: 700}}>
             {scene.card}
           </div>
         </div>

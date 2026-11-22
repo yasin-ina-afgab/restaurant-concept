@@ -1,26 +1,35 @@
 import React from 'react';
-import {useCurrentFrame} from 'remotion';
+import {interpolate, useCurrentFrame} from 'remotion';
 import {COLORS} from './theme';
 import {GROUND_Y} from './Ground';
-import {FPS} from './scenes';
 
 const FIG_W = 360;
 const FIG_H = 620;
+const FEET_Y = FIG_H - 6;
+const BODY_BASE_Y = FIG_H - 18;
 
 // شخصية بسيطة ثنائية الأبعاد: ثوب أبيض، غطاء رأس بني، حزام خفيف
+// كل الحركات مشتقة من useCurrentFrame() لتُصيَّر إطاراً بإطار
 export const Character: React.FC = () => {
   const frame = useCurrentFrame();
-  const t = frame / FPS;
 
-  // تنفس هادئ (دورة ~4 ثوانٍ) وتمايل خفيف جداً (دورة ~7 ثوانٍ)
-  const breath = Math.sin((t * 2 * Math.PI) / 4);
-  const sway = Math.sin((t * 2 * Math.PI) / 7);
-  const chestScale = 1 + breath * 0.012;
-  const headLift = -breath * 2.5;
-  const swayDeg = sway * 0.9;
+  // تمايل لطيف يميناً ويساراً (±3 درجات) حول القدمين
+  const swayDeg = Math.sin(frame / 25) * 3;
+
+  // تنفس مستمر: scaleY بين 1 و 1.03
+  const breathWave = Math.sin(frame / 18); // -1 .. 1
+  const scaleY = interpolate(breathWave, [-1, 1], [1, 1.03]);
+
+  // حركة إيقاعية للرأس والذراعين متناسقة مع التنفس
+  const bodyTopRise = (scaleY - 1) * (BODY_BASE_Y - 185); // ارتفاع الكتفين مع الشهيق
+  const headTilt = Math.sin(frame / 18 + 0.6) * 1.6; // ميلان خفيف للرأس
+  const headBob = -breathWave * 2;
+  const armSwing = interpolate(breathWave, [-1, 1], [-2.5, 2.5]);
 
   const ink = COLORS.ink;
   const sw = 5;
+
+  const breathingBody = `translate(180 ${BODY_BASE_Y}) scale(1 ${scaleY}) translate(-180 ${-BODY_BASE_Y})`;
 
   return (
     <svg
@@ -34,31 +43,23 @@ export const Character: React.FC = () => {
         overflow: 'visible',
       }}
     >
-      {/* ظل خفيف عند القدمين */}
-      <ellipse cx={180} cy={FIG_H - 6} rx={110 + breath * 2} ry={10} fill={ink} opacity={0.12} />
+      {/* ظل عند القدمين يتسع ويضيق مع التمايل */}
+      <ellipse
+        cx={180 + swayDeg * 4}
+        cy={FEET_Y}
+        rx={110 + Math.abs(swayDeg) * 3}
+        ry={10}
+        fill={ink}
+        opacity={0.12}
+      />
 
-      <g transform={`rotate(${swayDeg} 180 ${FIG_H - 6})`}>
+      <g transform={`rotate(${swayDeg} 180 ${FEET_Y})`}>
         {/* القدمان */}
         <ellipse cx={150} cy={FIG_H - 12} rx={26} ry={10} fill={ink} />
         <ellipse cx={210} cy={FIG_H - 12} rx={26} ry={10} fill={ink} />
 
-        {/* الجسم مع حركة التنفس (تمدد من أسفل) */}
-        <g transform={`translate(180 ${FIG_H - 18}) scale(1 ${chestScale}) translate(-180 ${-(FIG_H - 18)})`}>
-          {/* الذراعان خلف الثوب */}
-          <path
-            d="M 108 205 C 82 270, 78 340, 92 398"
-            fill="none"
-            stroke={ink}
-            strokeWidth={sw}
-            strokeLinecap="round"
-          />
-          <path
-            d="M 252 205 C 278 270, 282 340, 268 398"
-            fill="none"
-            stroke={ink}
-            strokeWidth={sw}
-            strokeLinecap="round"
-          />
+        {/* الجسم مع حركة التنفس */}
+        <g transform={breathingBody}>
           {/* الثوب الأبيض */}
           <path
             d="M 130 185
@@ -75,24 +76,6 @@ export const Character: React.FC = () => {
             strokeWidth={sw}
             strokeLinejoin="round"
           />
-          {/* أكمام */}
-          <path
-            d="M 98 232 C 88 300, 84 350, 90 396 L 112 398 C 110 350, 112 300, 118 250"
-            fill={COLORS.robeShade}
-            stroke={ink}
-            strokeWidth={3}
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 262 232 C 272 300, 276 350, 270 396 L 248 398 C 250 350, 248 300, 242 250"
-            fill={COLORS.robeShade}
-            stroke={ink}
-            strokeWidth={3}
-            strokeLinejoin="round"
-          />
-          {/* اليدان */}
-          <circle cx={100} cy={410} r={13} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
-          <circle cx={260} cy={410} r={13} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
           {/* خط الأزرار */}
           <line x1={180} y1={200} x2={180} y2={300} stroke={ink} strokeWidth={3} opacity={0.5} />
           {/* ثنيات الثوب */}
@@ -106,12 +89,40 @@ export const Character: React.FC = () => {
             strokeWidth={9}
             strokeLinecap="round"
           />
-          <path d="M 194 360 L 200 392" stroke={COLORS.headCover} strokeWidth={6} strokeLinecap="round" />
+          <path
+            d={`M 194 360 L ${200 + swayDeg * 1.5} 392`}
+            stroke={COLORS.headCover}
+            strokeWidth={6}
+            strokeLinecap="round"
+          />
         </g>
 
-        {/* الرأس وغطاء الرأس */}
-        <g transform={`translate(0 ${headLift - (chestScale - 1) * 420})`}>
-          {/* طرفا غطاء الرأس المتدليان على الكتفين */}
+        {/* الذراعان: تتأرجحان من الكتفين بإيقاع التنفس */}
+        <g transform={`translate(0 ${-bodyTopRise})`}>
+          <g transform={`rotate(${armSwing} 106 215)`}>
+            <path
+              d="M 98 232 C 88 300, 84 350, 90 396 L 112 398 C 110 350, 112 300, 118 250"
+              fill={COLORS.robeShade}
+              stroke={ink}
+              strokeWidth={3}
+              strokeLinejoin="round"
+            />
+            <circle cx={100} cy={410} r={13} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
+          </g>
+          <g transform={`rotate(${-armSwing} 254 215)`}>
+            <path
+              d="M 262 232 C 272 300, 276 350, 270 396 L 248 398 C 250 350, 248 300, 242 250"
+              fill={COLORS.robeShade}
+              stroke={ink}
+              strokeWidth={3}
+              strokeLinejoin="round"
+            />
+            <circle cx={260} cy={410} r={13} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
+          </g>
+        </g>
+
+        {/* الرأس وغطاء الرأس: يرتفع مع الكتفين ويميل ميلاناً خفيفاً */}
+        <g transform={`translate(0 ${headBob - bodyTopRise}) rotate(${headTilt} 180 175)`}>
           <path
             d="M 122 110 C 108 160, 108 200, 120 236 L 150 228 C 142 190, 142 150, 148 118 Z"
             fill={COLORS.headCover}
@@ -126,11 +137,8 @@ export const Character: React.FC = () => {
             strokeWidth={sw}
             strokeLinejoin="round"
           />
-          {/* الرقبة */}
           <rect x={164} y={160} width={32} height={30} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
-          {/* الوجه */}
           <ellipse cx={180} cy={128} rx={42} ry={50} fill={COLORS.skin} stroke={ink} strokeWidth={sw} />
-          {/* لحية بسيطة */}
           <path
             d="M 140 132 C 142 170, 160 184, 180 184 C 200 184, 218 170, 220 132 C 210 152, 196 158, 180 158 C 164 158, 150 152, 140 132 Z"
             fill={COLORS.headCoverDark}
@@ -138,10 +146,8 @@ export const Character: React.FC = () => {
             strokeWidth={3}
             strokeLinejoin="round"
           />
-          {/* عينان مغمضتان بهدوء */}
           <path d="M 160 124 Q 166 130 172 124" fill="none" stroke={ink} strokeWidth={3.5} strokeLinecap="round" />
           <path d="M 188 124 Q 194 130 200 124" fill="none" stroke={ink} strokeWidth={3.5} strokeLinecap="round" />
-          {/* غطاء الرأس فوق الجبهة */}
           <path
             d="M 126 120
                C 122 70, 150 46, 180 46
@@ -153,7 +159,6 @@ export const Character: React.FC = () => {
             strokeWidth={sw}
             strokeLinejoin="round"
           />
-          {/* عقال/طوق خفيف */}
           <path
             d="M 132 92 C 158 78, 202 78, 228 92"
             fill="none"

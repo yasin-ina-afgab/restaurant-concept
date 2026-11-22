@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS} from './theme';
 import {WIDTH, HEIGHT} from './scenes';
 
@@ -22,7 +22,10 @@ const buildWave = (): string => {
 const WAVE = buildWave();
 
 export const Ground: React.FC = () => {
+  const frame = useCurrentFrame();
   const hatchHeight = 260;
+  // انزلاق بطيء لخطوط التظليل لإحساس بالحياة دون تشتيت
+  const hatchShift = (frame * 0.3) % 26;
   return (
     <AbsoluteFill>
       <svg width={WIDTH} height={HEIGHT} style={{position: 'absolute', inset: 0}}>
@@ -32,7 +35,7 @@ export const Ground: React.FC = () => {
             width={26}
             height={26}
             patternUnits="userSpaceOnUse"
-            patternTransform="rotate(-45)"
+            patternTransform={`rotate(-45) translate(${hatchShift} 0)`}
           >
             <line x1={0} y1={0} x2={0} y2={26} stroke={COLORS.ink} strokeWidth={3} />
           </pattern>

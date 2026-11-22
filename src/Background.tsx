@@ -1,17 +1,28 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
+import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {COLORS} from './theme';
 import {WIDTH, HEIGHT} from './scenes';
 
 const CELL = 60;
 
-// خلفية بيج مع شبكة مربعات هندسية خفيفة (شفافية 15%)
+// خلفية بيج مع شبكة مربعات خفيفة (شفافية 15%) تنساب ببطء شديد
 export const Background: React.FC = () => {
+  const frame = useCurrentFrame();
+  // انسياب قطري هادئ: ~0.25px أفقياً و ~0.4px رأسياً لكل إطار
+  const dx = (frame * 0.25) % CELL;
+  const dy = (frame * 0.4) % CELL;
+
   return (
     <AbsoluteFill style={{backgroundColor: COLORS.background}}>
       <svg width={WIDTH} height={HEIGHT} style={{position: 'absolute', inset: 0}}>
         <defs>
-          <pattern id="grid" width={CELL} height={CELL} patternUnits="userSpaceOnUse">
+          <pattern
+            id="grid"
+            width={CELL}
+            height={CELL}
+            patternUnits="userSpaceOnUse"
+            patternTransform={`translate(${dx} ${-dy})`}
+          >
             <path
               d={`M ${CELL} 0 L 0 0 0 ${CELL}`}
               fill="none"
