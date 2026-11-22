@@ -1,0 +1,22 @@
+{
+  "name": "dua-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "فيديو دعاء عمودي مبني بـ Remotion",
+  "scripts": {
+    "prepare-audio": "node scripts/prepare-audio.mjs",
+    "studio": "npm run prepare-audio && remotion studio",
+    "render": "npm run prepare-audio && remotion render DuaVideo final_dua.mp4 --codec=h264 --audio-codec=aac"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.545",
+    "@remotion/google-fonts": "4.0.545",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.545"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules/
+out/
+final_dua.mp4
+public/audio.mp3
+src/audio-config.json
