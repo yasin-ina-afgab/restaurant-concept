@@ -25,7 +25,7 @@ export const Ground: React.FC = () => {
   const frame = useCurrentFrame();
   const hatchHeight = 260;
   // انزلاق بطيء لخطوط التظليل لإحساس بالحياة دون تشتيت
-  const hatchShift = (frame * 0.3) % 26;
+  const hatchShift = (frame * 0.6) % 26;
   return (
     <AbsoluteFill>
       <svg width={WIDTH} height={HEIGHT} style={{position: 'absolute', inset: 0}}>

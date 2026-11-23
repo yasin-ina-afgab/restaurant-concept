@@ -32,8 +32,8 @@ const useEnterExit = (delay: number, durationInFrames: number) => {
 
   return {
     opacity: enterOpacity * (1 - exit),
-    translateY: interpolate(enter, [0, 1], [90, 0]) - exit * 40,
-    scale: interpolate(enter, [0, 1], [0.94, 1]) - exit * 0.04,
+    translateY: interpolate(enter, [0, 1], [160, 0]) - exit * 70,
+    scale: interpolate(enter, [0, 1], [0.85, 1]) - exit * 0.08,
   };
 };
 
@@ -58,7 +58,7 @@ export const SceneText: React.FC<{scene: Scene; durationInFrames: number}> = ({
   const top = useEnterExit(0, durationInFrames);
   const card = useEnterExit(4, durationInFrames);
   // نبض خفيف جداً للبطاقة أثناء ظهورها
-  const cardFloat = Math.sin(frame / 22) * 4;
+  const cardFloat = Math.sin(frame / 22) * 9;
 
   return (
     <AbsoluteFill>

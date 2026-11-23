@@ -8,9 +8,9 @@ const CELL = 60;
 // خلفية بيج مع شبكة مربعات خفيفة (شفافية 15%) تنساب ببطء شديد
 export const Background: React.FC = () => {
   const frame = useCurrentFrame();
-  // انسياب قطري هادئ: ~0.25px أفقياً و ~0.4px رأسياً لكل إطار
-  const dx = (frame * 0.25) % CELL;
-  const dy = (frame * 0.4) % CELL;
+  // انسياب قطري هادئ: ~0.6px أفقياً و ~0.9px رأسياً لكل إطار
+  const dx = (frame * 0.6) % CELL;
+  const dy = (frame * 0.9) % CELL;
 
   return (
     <AbsoluteFill style={{backgroundColor: COLORS.background}}>

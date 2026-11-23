@@ -13,18 +13,18 @@ const BODY_BASE_Y = FIG_H - 18;
 export const Character: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // تمايل لطيف يميناً ويساراً (±3 درجات) حول القدمين
-  const swayDeg = Math.sin(frame / 25) * 3;
+  // تمايل لطيف يميناً ويساراً (±5 درجات) حول القدمين
+  const swayDeg = Math.sin(frame / 25) * 5;
 
-  // تنفس مستمر: scaleY بين 1 و 1.03
+  // تنفس مستمر: scaleY بين 1 و 1.05
   const breathWave = Math.sin(frame / 18); // -1 .. 1
-  const scaleY = interpolate(breathWave, [-1, 1], [1, 1.03]);
+  const scaleY = interpolate(breathWave, [-1, 1], [1, 1.05]);
 
   // حركة إيقاعية للرأس والذراعين متناسقة مع التنفس
   const bodyTopRise = (scaleY - 1) * (BODY_BASE_Y - 185); // ارتفاع الكتفين مع الشهيق
-  const headTilt = Math.sin(frame / 18 + 0.6) * 1.6; // ميلان خفيف للرأس
-  const headBob = -breathWave * 2;
-  const armSwing = interpolate(breathWave, [-1, 1], [-2.5, 2.5]);
+  const headTilt = Math.sin(frame / 18 + 0.6) * 3.5; // ميلان خفيف للرأس
+  const headBob = -breathWave * 4;
+  const armSwing = interpolate(breathWave, [-1, 1], [-6, 6]);
 
   const ink = COLORS.ink;
   const sw = 5;

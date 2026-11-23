@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, interpolate, random, useCurrentFrame} from 'remotion';
 import {WIDTH, HEIGHT} from './scenes';
 
-const COUNT = 46;
+const COUNT = 70;
 const TOP_LIMIT = 0;
 const BOTTOM_LIMIT = 1330; // تبدأ الجزيئات فوق خط الأرض
 const TRAVEL = BOTTOM_LIMIT - TOP_LIMIT;
@@ -22,12 +22,12 @@ type Particle = {
 const PARTICLES: Particle[] = new Array(COUNT).fill(0).map((_, i) => ({
   x: random(`x-${i}`) * WIDTH,
   offset: random(`o-${i}`) * TRAVEL,
-  speed: 0.6 + random(`s-${i}`) * 0.9, // بكسل لكل إطار
-  size: 3 + random(`z-${i}`) * 6,
-  drift: 10 + random(`d-${i}`) * 28,
+  speed: 1.2 + random(`s-${i}`) * 1.6, // بكسل لكل إطار
+  size: 4 + random(`z-${i}`) * 8,
+  drift: 18 + random(`d-${i}`) * 40,
   phase: random(`p-${i}`) * Math.PI * 2,
   twinkle: 18 + random(`t-${i}`) * 30,
-  alpha: 0.35 + random(`a-${i}`) * 0.5,
+  alpha: 0.5 + random(`a-${i}`) * 0.5,
 }));
 
 // نقاط ذهبية صغيرة تطفو للأعلى ببطء
