@@ -72,7 +72,7 @@ const STARS = new Array(150).fill(0).map((_, i) => ({
   depth: 0.02 + random(`sd${i}`) * 0.08, // عمق للمنظور (parallax)
   phase: random(`sp${i}`) * Math.PI * 2,
   tw: 25 + random(`st${i}`) * 50,
-  gold: random(`sg${i}`) > 0.82,
+  gold: random(`sg${i}`) > 0.35,
 }));
 
 export const Background: React.FC = () => {
@@ -122,7 +122,7 @@ export const Background: React.FC = () => {
           const x = (((s.x - cam.x * s.depth + Math.sin(frame / 80 + s.phase) * 6) % WIDTH) + WIDTH) % WIDTH;
           const tw = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(frame / s.tw + s.phase));
           return (
-            <circle key={i} cx={x} cy={y} r={s.r} fill={s.gold ? COLORS.goldSoft : '#CBD5E1'} opacity={tw * (s.gold ? 0.8 : 0.55)} />
+            <circle key={i} cx={x} cy={y} r={s.r} fill={s.gold ? COLORS.goldSoft : '#CBD5E1'} opacity={tw * (s.gold ? 0.75 : 0.4)} />
           );
         })}
 

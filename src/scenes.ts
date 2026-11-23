@@ -4,11 +4,14 @@ export const HEIGHT = 1920;
 export const DURATION_SECONDS = 61;
 export const TOTAL_FRAMES = DURATION_SECONDS * FPS; // 1830
 
+export const DEDICATION_LINE = 'صدقة جارية عن روح الحاج إسماعيل عبدالله دعالة — رحمه الله';
+
 export type Scene = {
   start: number; // بالثواني
   end: number; // بالثواني
   top: string;
   card: string;
+  dedication?: boolean; // بطاقة الإهداء البارزة في المشهد الأخير
 };
 
 export const SCENES: Scene[] = [
@@ -45,7 +48,8 @@ export const SCENES: Scene[] = [
   {
     start: 51,
     end: 61,
-    top: 'أسأل الله لمن نشره الجنة',
-    card: 'وصلى الله وسلم على نبينا محمد\u00A0ﷺ',
+    top: 'أسأل الله لمن نشره الجنة — وصلى الله وسلم على نبينا محمد\u00A0ﷺ',
+    card: 'اللهم اجعله صدقة جارية ونوراً في قبر الحاج إسماعيل عبدالله دعالة، واغفر له وارحمه',
+    dedication: true,
   },
 ];

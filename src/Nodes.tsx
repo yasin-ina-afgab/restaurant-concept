@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
-import {COLORS, readex} from './theme';
+import {COLORS, plex} from './theme';
 import {WIDTH, HEIGHT, SCENES} from './scenes';
 import {FOCUS, NODES, getCamera} from './camera';
 
@@ -99,7 +99,7 @@ export const Nodes: React.FC = () => {
                 <circle cx={n.x} cy={n.y} r={11} fill={COLORS.cyan} opacity={visited} />
                 <circle cx={n.x} cy={n.y} r={11 + pulse * 2} fill={COLORS.gold} opacity={active} />
                 {/* تسميات تقنية بجانب العقدة */}
-                <g opacity={interpolate(reached, [0, 1], [0.35, 1])} style={{fontFamily: readex}}>
+                <g opacity={interpolate(reached, [0, 1], [0.35, 1])} style={{fontFamily: plex}}>
                   <text x={labelX} y={n.y - 6} fill={active > 0.5 ? COLORS.gold : visited > 0.5 ? COLORS.cyan : COLORS.muted} fontSize={30} fontWeight={500} textAnchor={side < 0 ? 'start' : 'end'}>
                     {String(j + 1).padStart(2, '0')}
                   </text>
