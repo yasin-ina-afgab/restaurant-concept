@@ -1,172 +1,59 @@
 import React from 'react';
-import {interpolate, useCurrentFrame} from 'remotion';
-import {COLORS} from './theme';
-import {GROUND_Y} from './Ground';
+import {useCurrentFrame} from 'remotion';
+import {COLORS, GROUND_Y} from './theme';
 
-const FIG_W = 360;
-const FIG_H = 620;
-const FEET_Y = FIG_H - 6;
-const BODY_BASE_Y = FIG_H - 18;
+const W = 200;
+const H = 330;
 
-// شخصية بسيطة ثنائية الأبعاد: ثوب أبيض، غطاء رأس بني، حزام خفيف
-// كل الحركات مشتقة من useCurrentFrame() لتُصيَّر إطاراً بإطار
+// أيقونة مسطحة مجردة: ثوب أبيض + شماغ وعقال هندسيان، بلا ملامح
 export const Character: React.FC = () => {
   const frame = useCurrentFrame();
-
-  // تمايل لطيف يميناً ويساراً (±5 درجات) حول القدمين
-  const swayDeg = Math.sin(frame / 25) * 5;
-
-  // تنفس مستمر: scaleY بين 1 و 1.05
-  const breathWave = Math.sin(frame / 18); // -1 .. 1
-  const scaleY = interpolate(breathWave, [-1, 1], [1, 1.05]);
-
-  // حركة إيقاعية للرأس والذراعين متناسقة مع التنفس
-  const bodyTopRise = (scaleY - 1) * (BODY_BASE_Y - 185); // ارتفاع الكتفين مع الشهيق
-  const headTilt = Math.sin(frame / 18 + 0.6) * 3.5; // ميلان خفيف للرأس
-  const headBob = -breathWave * 4;
-  const armSwing = interpolate(breathWave, [-1, 1], [-6, 6]);
+  // تنفس هادئ جداً (دورة ~6 ثوانٍ)
+  const breath = (Math.sin(frame / 30) + 1) / 2; // 0..1
+  const scaleY = 1 + breath * 0.018;
+  const lift = breath * 4; // ارتفاع الرأس مع الشهيق
 
   const ink = COLORS.ink;
-  const sw = 5;
-
-  const breathingBody = `translate(180 ${BODY_BASE_Y}) scale(1 ${scaleY}) translate(-180 ${-BODY_BASE_Y})`;
 
   return (
     <svg
-      width={FIG_W}
-      height={FIG_H}
-      viewBox={`0 0 ${FIG_W} ${FIG_H}`}
-      style={{
-        position: 'absolute',
-        left: (1080 - FIG_W) / 2,
-        top: GROUND_Y - FIG_H + 6,
-        overflow: 'visible',
-      }}
+      width={W}
+      height={H}
+      viewBox={`0 0 ${W} ${H}`}
+      style={{position: 'absolute', left: (1080 - W) / 2, top: GROUND_Y - H, overflow: 'visible'}}
     >
-      {/* ظل عند القدمين يتسع ويضيق مع التمايل */}
-      <ellipse
-        cx={180 + swayDeg * 4}
-        cy={FEET_Y}
-        rx={110 + Math.abs(swayDeg) * 3}
-        ry={10}
-        fill={ink}
-        opacity={0.12}
-      />
+      {/* الثوب */}
+      <g transform={`translate(100 ${H}) scale(1 ${scaleY}) translate(-100 ${-H})`}>
+        <path
+          d={`M 62 118 Q 100 108 138 118 L 152 ${H - 4} Q 100 ${H + 4} 48 ${H - 4} Z`}
+          fill={COLORS.robe}
+          stroke={ink}
+          strokeWidth={4}
+          strokeLinejoin="round"
+        />
+        {/* ظل جانبي خفيف */}
+        <path d={`M 100 120 L 100 ${H - 2} Q 128 ${H} 152 ${H - 4} L 138 118 Q 120 113 100 112 Z`} fill={COLORS.robeShade} opacity={0.7} />
+        {/* فتحة الصدر */}
+        <line x1={100} y1={126} x2={100} y2={170} stroke={ink} strokeWidth={3} strokeLinecap="round" />
+      </g>
 
-      <g transform={`rotate(${swayDeg} 180 ${FEET_Y})`}>
-        {/* القدمان */}
-        <ellipse cx={150} cy={FIG_H - 12} rx={26} ry={10} fill={ink} />
-        <ellipse cx={210} cy={FIG_H - 12} rx={26} ry={10} fill={ink} />
-
-        {/* الجسم مع حركة التنفس */}
-        <g transform={breathingBody}>
-          {/* الثوب الأبيض */}
-          <path
-            d="M 130 185
-               C 112 190, 100 205, 98 230
-               L 92 400
-               C 88 470, 96 540, 104 598
-               L 256 598
-               C 264 540, 272 470, 268 400
-               L 262 230
-               C 260 205, 248 190, 230 185
-               Z"
-            fill={COLORS.robe}
-            stroke={ink}
-            strokeWidth={sw}
-            strokeLinejoin="round"
-          />
-          {/* خط الأزرار */}
-          <line x1={180} y1={200} x2={180} y2={300} stroke={ink} strokeWidth={3} opacity={0.5} />
-          {/* ثنيات الثوب */}
-          <path d="M 150 400 C 146 470, 148 530, 150 590" fill="none" stroke={ink} strokeWidth={2.5} opacity={0.25} />
-          <path d="M 212 400 C 216 470, 214 530, 212 590" fill="none" stroke={ink} strokeWidth={2.5} opacity={0.25} />
-          {/* الحزام الخفيف */}
-          <path
-            d="M 112 352 C 150 362, 210 362, 248 352"
-            fill="none"
-            stroke={COLORS.headCover}
-            strokeWidth={9}
-            strokeLinecap="round"
-          />
-          <path
-            d={`M 194 360 L ${200 + swayDeg * 1.5} 392`}
-            stroke={COLORS.headCover}
-            strokeWidth={6}
-            strokeLinecap="round"
-          />
-        </g>
-
-        {/* الذراعان: تتأرجحان من الكتفين بإيقاع التنفس */}
-        <g transform={`translate(0 ${-bodyTopRise})`}>
-          <g transform={`rotate(${armSwing} 106 215)`}>
-            <path
-              d="M 98 232 C 88 300, 84 350, 90 396 L 112 398 C 110 350, 112 300, 118 250"
-              fill={COLORS.robeShade}
-              stroke={ink}
-              strokeWidth={3}
-              strokeLinejoin="round"
-            />
-            <circle cx={100} cy={410} r={13} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
-          </g>
-          <g transform={`rotate(${-armSwing} 254 215)`}>
-            <path
-              d="M 262 232 C 272 300, 276 350, 270 396 L 248 398 C 250 350, 248 300, 242 250"
-              fill={COLORS.robeShade}
-              stroke={ink}
-              strokeWidth={3}
-              strokeLinejoin="round"
-            />
-            <circle cx={260} cy={410} r={13} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
-          </g>
-        </g>
-
-        {/* الرأس وغطاء الرأس: يرتفع مع الكتفين ويميل ميلاناً خفيفاً */}
-        <g transform={`translate(0 ${headBob - bodyTopRise}) rotate(${headTilt} 180 175)`}>
-          <path
-            d="M 122 110 C 108 160, 108 200, 120 236 L 150 228 C 142 190, 142 150, 148 118 Z"
-            fill={COLORS.headCover}
-            stroke={ink}
-            strokeWidth={sw}
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 238 110 C 252 160, 252 200, 240 236 L 210 228 C 218 190, 218 150, 212 118 Z"
-            fill={COLORS.headCover}
-            stroke={ink}
-            strokeWidth={sw}
-            strokeLinejoin="round"
-          />
-          <rect x={164} y={160} width={32} height={30} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
-          <ellipse cx={180} cy={128} rx={42} ry={50} fill={COLORS.skin} stroke={ink} strokeWidth={sw} />
-          <path
-            d="M 140 132 C 142 170, 160 184, 180 184 C 200 184, 218 170, 220 132 C 210 152, 196 158, 180 158 C 164 158, 150 152, 140 132 Z"
-            fill={COLORS.headCoverDark}
-            stroke={ink}
-            strokeWidth={3}
-            strokeLinejoin="round"
-          />
-          <path d="M 160 124 Q 166 130 172 124" fill="none" stroke={ink} strokeWidth={3.5} strokeLinecap="round" />
-          <path d="M 188 124 Q 194 130 200 124" fill="none" stroke={ink} strokeWidth={3.5} strokeLinecap="round" />
-          <path
-            d="M 126 120
-               C 122 70, 150 46, 180 46
-               C 210 46, 238 70, 234 120
-               C 222 98, 202 90, 180 90
-               C 158 90, 138 98, 126 120 Z"
-            fill={COLORS.headCover}
-            stroke={ink}
-            strokeWidth={sw}
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 132 92 C 158 78, 202 78, 228 92"
-            fill="none"
-            stroke={COLORS.headCoverDark}
-            strokeWidth={7}
-            strokeLinecap="round"
-          />
-        </g>
+      {/* الرأس: شماغ وعقال */}
+      <g transform={`translate(0 ${-lift})`}>
+        {/* طرفا الشماغ على الكتفين */}
+        <path d="M 58 70 L 46 146 L 84 136 L 80 76 Z" fill={COLORS.shemagh} stroke={ink} strokeWidth={4} strokeLinejoin="round" />
+        <path d="M 142 70 L 154 146 L 116 136 L 120 76 Z" fill={COLORS.shemaghShade} stroke={ink} strokeWidth={4} strokeLinejoin="round" />
+        {/* الوجه (دائرة بلا ملامح) */}
+        <circle cx={100} cy={82} r={30} fill={COLORS.skin} stroke={ink} strokeWidth={4} />
+        {/* الشماغ فوق الرأس */}
+        <path
+          d="M 56 80 Q 56 30 100 30 Q 144 30 144 80 L 128 66 Q 100 56 72 66 Z"
+          fill={COLORS.shemagh}
+          stroke={ink}
+          strokeWidth={4}
+          strokeLinejoin="round"
+        />
+        {/* العقال */}
+        <rect x={62} y={40} width={76} height={11} rx={5.5} fill={COLORS.agal} />
       </g>
     </svg>
   );

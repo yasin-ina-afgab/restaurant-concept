@@ -14,11 +14,13 @@ npm run render   # تصيير final_dua.mp4
 
 ## البنية
 
-- `src/scenes.ts` — نصوص المشاهد وتوقيتها بالثواني.
-- `src/Background.tsx` — الخلفية البيج وشبكة المربعات.
-- `src/Ground.tsx` — الخط الأرضي المتموج وخطوط التظليل.
-- `src/Character.tsx` — الشخصية مع حركة التنفس والتمايل.
-- `src/SceneText.tsx` — النص العلوي والبطاقة السفلية مع تأثير الظهور.
+تصميم مسطح بسيط (Clean Flat Minimalist):
+
+- `src/scenes.ts`: نصوص المشاهد وتوقيتها بالثواني.
+- `src/theme.ts`: الألوان والخطوط (IBM Plex Sans Arabic، مع Amiri احتياطياً لرمز ﷺ).
+- `src/Background.tsx`: الخلفية البيج والشبكة الباهتة والخط الأرضي.
+- `src/Character.tsx`: أيقونة الشخصية المسطحة مع تنفس هادئ.
+- `src/SceneText.tsx`: النص الرئيسي والبطاقة تحته مباشرة في الثلث العلوي، مع انتقال ناعم للأعلى.
 
 ## GitHub Actions
 

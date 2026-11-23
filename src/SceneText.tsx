@@ -1,124 +1,81 @@
 import React from 'react';
-import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig, Easing} from 'remotion';
-import {COLORS, fontFamily, fallbackFontFamily} from './theme';
+import {AbsoluteFill, Easing, interpolate, useCurrentFrame} from 'remotion';
+import {COLORS, fallbackFontFamily, fontFamily} from './theme';
 import type {Scene} from './scenes';
 
-const ENTER_FRAMES = 15; // الدخول في أول 15 إطاراً من المشهد
-const EXIT_FRAMES = 10; // الخروج في آخر 10 إطارات
+export const FADE_IN = 18; // إطارات ظهور المشهد
+export const FADE_OUT = 16; // إطارات اختفاء المشهد
 
-// دخول بـ spring من الأسفل للأعلى مع تلاشٍ، وخروج ناعم في نهاية المشهد
-const useEnterExit = (delay: number, durationInFrames: number) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
+const ease = Easing.bezier(0.45, 0, 0.25, 1);
 
-  const enter = spring({
-    frame: frame - delay,
-    fps,
-    durationInFrames: ENTER_FRAMES - delay,
-    config: {damping: 14, stiffness: 120, mass: 0.8},
-  });
-  const enterOpacity = interpolate(frame, [delay, ENTER_FRAMES], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.cubic),
-  });
-
-  const exitStart = durationInFrames - EXIT_FRAMES;
-  const exit = interpolate(frame, [exitStart, durationInFrames - 1], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.inOut(Easing.cubic),
-  });
-
-  return {
-    opacity: enterOpacity * (1 - exit),
-    translateY: interpolate(enter, [0, 1], [160, 0]) - exit * 70,
-    scale: interpolate(enter, [0, 1], [0.85, 1]) - exit * 0.08,
-  };
-};
-
-const arabicText: React.CSSProperties = {
+const arabic: React.CSSProperties = {
   fontFamily: `${fontFamily}, ${fallbackFontFamily}, sans-serif`,
   direction: 'rtl',
   unicodeBidi: 'isolate',
   textAlign: 'center',
   color: COLORS.ink,
-  // مسافة سطر واسعة كي يظهر التشكيل بوضوح دون تداخل
-  lineHeight: 1.85,
+  lineHeight: 1.75, // مساحة كافية للتشكيل
   fontFeatureSettings: '"kern" 1, "liga" 1, "calt" 1, "mark" 1, "mkmk" 1',
-  textRendering: 'geometricPrecision',
-  WebkitFontSmoothing: 'antialiased',
 };
 
-export const SceneText: React.FC<{scene: Scene; durationInFrames: number}> = ({
-  scene,
-  durationInFrames,
-}) => {
+// النص الرئيسي ثم البطاقة مباشرة تحته في الثلث العلوي
+// fadeIn / fadeOut بالإطارات: 0 للمشهد الأول (يظهر فوراً) أو الأخير
+export const SceneText: React.FC<{
+  scene: Scene;
+  durationInFrames: number;
+  fadeIn: number;
+  fadeOut: number;
+}> = ({scene, durationInFrames, fadeIn, fadeOut}) => {
   const frame = useCurrentFrame();
-  const top = useEnterExit(0, durationInFrames);
-  const card = useEnterExit(4, durationInFrames);
-  // نبض خفيف جداً للبطاقة أثناء ظهورها
-  const cardFloat = Math.sin(frame / 22) * 9;
+
+  const inP = fadeIn === 0 ? 1 : interpolate(frame, [0, fadeIn], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease});
+  const outP =
+    fadeOut === 0
+      ? 0
+      : interpolate(frame, [durationInFrames - fadeOut, durationInFrames], [0, 1], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+          easing: ease,
+        });
+
+  const opacity = inP * (1 - outP);
+  // حركة خفيفة للأعلى: يدخل من الأسفل ويخرج للأعلى
+  const y = (1 - inP) * 28 - outP * 28;
+  const cardDelay = fadeIn === 0 ? 1 : interpolate(frame, [4, fadeIn + 4], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease});
+  const cardY = (1 - cardDelay) * 20;
 
   return (
     <AbsoluteFill>
-      {/* النص العلوي */}
       <div
         style={{
           position: 'absolute',
-          top: 170,
-          left: 70,
-          right: 70,
-          height: 470,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          dir="rtl"
-          lang="ar"
-          style={{
-            ...arabicText,
-            fontSize: 84,
-            fontWeight: 800,
-            opacity: top.opacity,
-            transform: `translateY(${top.translateY}px) scale(${top.scale})`,
-          }}
-        >
-          {scene.top}
-        </div>
-      </div>
-
-      {/* البطاقة السفلية: حواف دائرية + إطار بني مزدوج */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 1420,
+          top: 210,
           left: 80,
           right: 80,
           display: 'flex',
-          justifyContent: 'center',
-          opacity: card.opacity,
-          transform: `translateY(${card.translateY + cardFloat}px) scale(${card.scale})`,
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 44,
+          opacity,
+          transform: `translateY(${y}px)`,
         }}
       >
+        <div dir="rtl" lang="ar" style={{...arabic, fontSize: 72, fontWeight: 700}}>
+          {scene.top}
+        </div>
         <div
           style={{
-            width: '100%',
-            minHeight: 260,
+            opacity: cardDelay,
+            transform: `translateY(${cardY}px)`,
             backgroundColor: COLORS.card,
-            borderRadius: 44,
-            border: `10px double ${COLORS.ink}`,
-            boxShadow: `0 0 0 4px ${COLORS.card}, 0 0 0 7px ${COLORS.ink}, 0 18px 40px rgba(58,46,37,0.18)`,
-            padding: '34px 44px',
+            borderRadius: 36,
+            border: `9px double ${COLORS.ink}`,
+            padding: '26px 52px',
+            maxWidth: '100%',
             boxSizing: 'border-box',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
           }}
         >
-          <div dir="rtl" lang="ar" style={{...arabicText, fontSize: 64, fontWeight: 700}}>
+          <div dir="rtl" lang="ar" style={{...arabic, fontSize: 54, fontWeight: 600}}>
             {scene.card}
           </div>
         </div>
