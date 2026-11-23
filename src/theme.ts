@@ -1,28 +1,25 @@
-import {loadFont} from '@remotion/google-fonts/IBMPlexSansArabic';
 import {loadFont as loadAmiri} from '@remotion/google-fonts/Amiri';
+import {loadFont as loadReadex} from '@remotion/google-fonts/ReadexPro';
 
-export const {fontFamily} = loadFont('normal', {
-  weights: ['600', '700'],
+// Amiri للنص الرئيسي (تشكيل واضح ويحتوي رمز ﷺ)
+export const {fontFamily: amiri} = loadAmiri('normal', {
+  weights: ['400', '700'],
   subsets: ['arabic'],
 });
 
-// خط احتياطي لرمز ﷺ (غير موجود في IBM Plex Sans Arabic)
-export const {fontFamily: fallbackFontFamily} = loadAmiri('normal', {
-  weights: ['700'],
-  subsets: ['arabic'],
+// Readex Pro للنص الفرعي والتسميات
+export const {fontFamily: readex} = loadReadex('normal', {
+  weights: ['300', '400', '500'],
+  subsets: ['arabic', 'latin'],
 });
 
 export const COLORS = {
-  background: '#EDE6D6',
-  grid: '#3A2E25',
-  ink: '#3A2E25',
-  card: '#F5DFB0',
-  robe: '#FFFFFF',
-  robeShade: '#E9E3D7',
-  shemagh: '#FFFFFF',
-  shemaghShade: '#E2DACB',
-  agal: '#3A2E25',
-  skin: '#D8B48E',
+  bgTop: '#0B101B',
+  bgBottom: '#05080F',
+  gold: '#D4AF37',
+  goldSoft: '#FDE68A',
+  cyan: '#38BDF8',
+  white: '#F8FAFC',
+  muted: '#64748B',
+  grid: '148, 163, 184', // RGB لاستخدامه مع الشفافية
 };
-
-export const GROUND_Y = 1660;
